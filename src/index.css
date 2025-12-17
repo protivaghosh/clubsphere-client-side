@@ -1,0 +1,11 @@
+.dashboard-link {
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.dashboard-link.active {
+  background-color: #e0e7ff;
+  color: #2563eb;
+}
