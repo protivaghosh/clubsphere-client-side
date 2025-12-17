@@ -6,6 +6,7 @@ import Login from '../Page/Auth/Login/Login';
 import Register from '../Page/Auth/Register/Register';
 import ErrorPage from '../Page/Home/ErrorPage/ErrorPage';
 import DashboardLayout from '../LayOut/DashboardLayout/DashboardLayout';
+import CreateClub from '../Page/DashBoard/CreateClub/CreateClub';
 
 const Router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const Router = createBrowserRouter([
     {
       index: true,
       element: <h2>Welcome to Dashboard</h2>
+    },
+    {
+      path : '/dashboard/manager/create-club',
+      element : <CreateClub></CreateClub>
     }
   ]
 }
