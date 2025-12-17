@@ -3,8 +3,11 @@ import Lottie from "lottie-react";
 import registerLottie from "../../../../assets/json/register.json";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import UseAuth from "../UseAuth/UseAuth";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 const Register = () => {
+    const {registerUser} = UseAuth()
   const {
     register,
     handleSubmit,
@@ -12,9 +15,18 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log("Register Data:", data);
-    // এখানে Firebase Auth এর register logic implement করবে
-  };
+    registerUser(data.email, data.password)
+      .then(result => {
+          const loggedUser = result.user;
+          console.log("User Registered:", loggedUser);
+          // Optional: Save user info to MongoDB with default role 'member'
+      })
+      .catch(error => {
+          console.error(error.message);
+          // Show user-friendly error via toast/sweetalert
+      });
+}
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -96,7 +108,7 @@ const Register = () => {
           <div className="divider">OR</div>
 
           {/* 🔹 Social Login (Google) */}
-          <button className="btn btn-outline w-full">Continue with Google</button>
+          <SocialLogin></SocialLogin>
 
           <p className="mt-4 text-center text-gray-600">
             Already have an account?{" "}
