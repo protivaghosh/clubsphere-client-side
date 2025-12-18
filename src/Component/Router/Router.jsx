@@ -7,6 +7,10 @@ import Register from '../Page/Auth/Register/Register';
 import ErrorPage from '../Page/Home/ErrorPage/ErrorPage';
 import DashboardLayout from '../LayOut/DashboardLayout/DashboardLayout';
 import CreateClub from '../Page/DashBoard/CreateClub/CreateClub';
+import ManageClub from '../Page/DashBoard/ManageClub/ManageClub';
+import Clubs from '../Page/Home/Clubs/Clubs';
+import ClubDetails from '../Page/Home/ClubsDetails/ClubsDetails';
+import CreateEvent from '../Page/DashBoard/CreateEvent/CreateEvent';
 
 const Router = createBrowserRouter([
   {
@@ -25,6 +29,14 @@ const Router = createBrowserRouter([
         {
           path : '/register',
           element : <Register></Register> 
+        },
+        {
+          path : '/clubs',
+          element: <Clubs></Clubs>
+        },
+        {
+          path :'/clubs/:id',
+          element : <ClubDetails></ClubDetails>
         }
     ]
   },
@@ -37,8 +49,16 @@ const Router = createBrowserRouter([
       element: <h2>Welcome to Dashboard</h2>
     },
     {
+      path : '/dashboard/admin/clubs',
+      element:<ManageClub></ManageClub>
+    },
+    {
       path : '/dashboard/manager/create-club',
       element : <CreateClub></CreateClub>
+    },
+    {
+      path: '/dashboard/manager/events',
+      element : <CreateEvent></CreateEvent>
     }
   ]
 }
