@@ -6,10 +6,13 @@ import { Link, useNavigate } from "react-router-dom";
 import UseAuth from "../UseAuth/UseAuth";
 import Swal from "sweetalert2";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import useAxiosSecure from "../../../Hooks/UseAxiosSecure/useAxiosSecure";
 
 const Register = () => {
   const { registerUser, updateUserProfile } = UseAuth();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
+  
 
   const {
     register,
@@ -17,13 +20,27 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
+  // ✅ FIXED onSubmit
   const onSubmit = (data) => {
     registerUser(data.email, data.password)
-      .then(() => {
+      .then((result) => {
+        // Update Firebase profile
         return updateUserProfile({
           displayName: data.name,
           photoURL: data.photoURL,
-        });
+        }).then(() => result.user); // ✅ return user for next step
+      })
+      .then((user) => {
+        // ✅ SAVE USER TO MONGODB
+        const userInfo = {
+          name: data.name,
+          email: data.email,
+          photoURL: data.photoURL,
+          role: "member", 
+          createdAt: new Date()
+        };
+
+        return axiosSecure.post("/users", userInfo);
       })
       .then(() => {
         Swal.fire({
@@ -91,23 +108,16 @@ const Register = () => {
 
             {/* Password */}
             <div>
-             <input
-  type="password"
-  {...register("password", {
-    required: "Password is required",
-    minLength: {
-      value: 6,
-      message: "Password must be at least 6 characters",
-    },
-    pattern: {
-      value: /^(?=.*[a-z])(?=.*[A-Z]).+$/,
-      message: "Must contain at least one uppercase & one lowercase letter",
-    },
-  })}
-  placeholder="Password"
-  className="input input-bordered w-full"
-/>
-
+              <input
+                type="password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: { value: 6, message: "Password must be at least 6 characters" },
+                  pattern: { value: /^(?=.*[a-z])(?=.*[A-Z]).+$/, message: "Must contain at least one uppercase & one lowercase letter" },
+                })}
+                placeholder="Password"
+                className="input input-bordered w-full"
+              />
             </div>
 
             {/* Photo URL */}

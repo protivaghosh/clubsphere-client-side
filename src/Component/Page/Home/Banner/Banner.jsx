@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import imgLotti from '../../../../assets/Globe World.json';
+import img2 from '../../../../assets/json/login.json'
+import img3 from '../../../../assets/json/register.json'
+import LottieSwiper from '../LottieSwiper/LottieSwiper';
 
 const Banner = () => {
     return (
@@ -37,7 +40,7 @@ const Banner = () => {
                 {/* Right Animation Section */}
                 <div className="lg:w-1/2 flex justify-center">
                     <div className="w-64 sm:w-80 md:w-96 lg:w-[420px]">
-                        <Lottie animationData={imgLotti} loop={true} />
+                       <LottieSwiper></LottieSwiper>
                     </div>
                 </div>
 

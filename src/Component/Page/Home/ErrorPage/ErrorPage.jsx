@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 const ErrorPage = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-white px-4">
+    <div className="min-h-screen  flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-white px-4">
       
       {/* Animation */}
       <motion.div
