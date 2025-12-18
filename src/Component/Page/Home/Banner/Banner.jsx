@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Lottie from 'lottie-react';
-import imgLotti from '../../../../assets/Globe World.json';
-import img2 from '../../../../assets/json/login.json'
-import img3 from '../../../../assets/json/register.json'
+
 import LottieSwiper from '../LottieSwiper/LottieSwiper';
 
 const Banner = () => {

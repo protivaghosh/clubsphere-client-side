@@ -75,8 +75,11 @@ const DashboardLayout = () => {
                 <NavLink to="/dashboard/manager/create-club" className={navClass}>
                   Create Club
                 </NavLink>
-                <NavLink to="/dashboard/manager/events" className={navClass}>
+                <NavLink to="/dashboard/manager/createEvents" className={navClass}>
                 Create Event
+                </NavLink>
+                <NavLink to="/dashboard/manager/events" className={navClass}>
+                 Events
                 </NavLink>
               </>
           

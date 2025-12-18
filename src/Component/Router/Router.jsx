@@ -11,6 +11,7 @@ import ManageClub from '../Page/DashBoard/ManageClub/ManageClub';
 import Clubs from '../Page/Home/Clubs/Clubs';
 import ClubDetails from '../Page/Home/ClubsDetails/ClubsDetails';
 import CreateEvent from '../Page/DashBoard/CreateEvent/CreateEvent';
+import ManagerEvents from '../Page/DashBoard/ManagerEvents/ManagerEvents';
 
 const Router = createBrowserRouter([
   {
@@ -57,8 +58,12 @@ const Router = createBrowserRouter([
       element : <CreateClub></CreateClub>
     },
     {
-      path: '/dashboard/manager/events',
+      path: '/dashboard/manager/createEvents',
       element : <CreateEvent></CreateEvent>
+    },
+    {
+      path: '/dashboard/manager/events',
+      element : <ManagerEvents></ManagerEvents>
     }
   ]
 }
