@@ -14,7 +14,11 @@ const Login = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({ mode: "onBlur" });
 
   const onSubmit = (data) => {
     signInUser(data.email, data.password)
@@ -52,18 +56,37 @@ const Login = () => {
           </h2>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <input
-              {...register("email", { required: true })}
-              placeholder="Email"
-              className="input input-bordered w-full"
-            />
+            {/* Email */}
+            <div>
+              <input
+                type="email"
+                placeholder="Email"
+                className="input input-bordered w-full"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Invalid email format"
+                  }
+                })}
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              )}
+            </div>
 
-            <input
-              type="password"
-              {...register("password", { required: true })}
-              placeholder="Password"
-              className="input input-bordered w-full"
-            />
+            {/* Password */}
+            <div>
+              <input
+                type="password"
+                placeholder="Password"
+                className="input input-bordered w-full"
+                {...register("password", { required: "Password is required" })}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+              )}
+            </div>
 
             <button className="btn btn-primary w-full">Login</button>
           </form>
