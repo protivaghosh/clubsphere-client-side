@@ -18,6 +18,8 @@ import MyClubs from '../Page/DashBoard/MyClubs/MyClubs';
 import EditEvent from '../Page/DashBoard/EditEvent/EditEvent';
 import EventRegistrations from '../Page/DashBoard/EventRegistrations/EventRegistrations';
 import ManageUsers from '../Page/DashBoard/ManageUsers/ManageUsers';
+import PaymentSuccess from '../Page/DashBoard/PaymentSuccess/PaymentSuccess';
+import PaymentCancel from '../Page/DashBoard/PaymentCancel/PaymentCancel';
 
 const Router = createBrowserRouter([
   {
@@ -92,6 +94,14 @@ const Router = createBrowserRouter([
    path: "/dashboard/manager/event-registrations/:id",
    element: <EventRegistrations/>
    },
+    {
+        path : 'payment-success',
+        element : <PaymentSuccess></PaymentSuccess>
+      },
+      {
+        path : 'payment-cancel',
+        element : <PaymentCancel></PaymentCancel>
+      },
     {
       path : '/dashboard/manager/my-clubs',
       element : <MyClubs></MyClubs>
