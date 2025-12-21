@@ -27,6 +27,38 @@ const EventsDetails = () => {
     fetchEvent();
   }, [id, axiosSecure]);
 
+  // ✅ FINAL JOIN HANDLER (Requirement Match)
+  const handleJoinEvent = async () => {
+    if (!event) return;
+
+    // 🟢 FREE EVENT
+    if (!event.isPaid) {
+      try {
+        await axiosSecure.post("/event-registrations", {
+          eventId: event._id,
+          clubId: event.clubId,
+        });
+        toast.success("Successfully joined the event!");
+      } catch (err) {
+        toast.error("Already registered or failed to join");
+      }
+    }
+
+    // PAID EVENT
+    else {
+      try {
+        const res = await axiosSecure.post(
+          "/create-event-checkout-session",
+          { eventId: event._id }
+        );
+
+        window.location.href = res.data.url;
+      } catch (err) {
+        toast.error("Payment initialization failed");
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center mt-20">
@@ -50,7 +82,7 @@ const EventsDetails = () => {
       transition={{ duration: 0.6 }}
       className="max-w-4xl mx-auto p-8 bg-gradient-to-r from-white via-gray-100 to-white rounded-3xl shadow-2xl border border-gray-200"
     >
-      {/* Hero Title with Background */}
+      {/* Hero */}
       <div className="relative h-60 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center mb-8">
         <h1 className="text-3xl md:text-4xl font-bold text-white text-center px-4 bg-black bg-opacity-30 rounded-lg">
           {event.title}
@@ -61,13 +93,17 @@ const EventsDetails = () => {
       <div className="flex flex-wrap gap-4 text-gray-700 mb-6 text-sm md:text-base">
         <span>📅 {new Date(event.eventDate).toLocaleDateString()}</span>
         <span>📍 {event.location}</span>
+
         {event.isPaid ? (
           <span className="badge badge-warning">Paid Event</span>
         ) : (
           <span className="badge badge-success">Free Event</span>
         )}
+
         {event.isPaid && (
-          <span className="font-semibold text-primary">Fee: ৳{event.eventFee}</span>
+          <span className="font-semibold text-primary">
+            Fee: ৳{event.eventFee}
+          </span>
         )}
       </div>
 
@@ -76,25 +112,21 @@ const EventsDetails = () => {
         <p>{event.description}</p>
       </div>
 
-      {/* Organizer Info */}
+      {/* Organizer */}
       <p className="text-gray-500 mb-8 text-sm md:text-base">
-        Organized by: <span className="font-semibold">{event.managerEmail}</span>
+        Organized by:{" "}
+        <span className="font-semibold">{event.managerEmail}</span>
       </p>
 
-      {/* Join / Payment Button */}
+      {/* ✅ JOIN / PAY BUTTON */}
       <div className="text-center">
         <button
+          onClick={handleJoinEvent}
           className="btn btn-primary btn-wide hover:scale-105 transition-transform"
-          onClick={() => {
-            if (event.isPaid) {
-              window.location.href = `/payment/${event._id}`;
-            } else {
-              toast.success("Successfully registered for the event!");
-              // Optionally, call backend to save registration
-            }
-          }}
         >
-          {event.isPaid ? `Pay ৳${event.eventFee} & Join` : "Join Event"}
+          {event.isPaid
+            ? `Pay ৳${event.eventFee} & Join`
+            : "Join Event"}
         </button>
       </div>
     </motion.div>

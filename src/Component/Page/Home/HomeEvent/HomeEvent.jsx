@@ -2,6 +2,8 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+
+import axios from "axios";
 import useAxiosSecure from "../../../Hooks/UseAxiosSecure/useAxiosSecure";
 
 const HomeEvent = () => {

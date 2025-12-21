@@ -20,6 +20,9 @@ import EventRegistrations from '../Page/DashBoard/EventRegistrations/EventRegist
 import ManageUsers from '../Page/DashBoard/ManageUsers/ManageUsers';
 import PaymentSuccess from '../Page/DashBoard/PaymentSuccess/PaymentSuccess';
 import PaymentCancel from '../Page/DashBoard/PaymentCancel/PaymentCancel';
+import MemberOverview from '../Page/DashBoard/MemberOverview/MemberOverview';
+import MemberClubs from '../Page/DashBoard/MemberClubs/MemberClubs';
+import MemberEvents from '../Page/DashBoard/MemberEvents/MemberEvents';
 
 const Router = createBrowserRouter([
   {
@@ -54,9 +57,8 @@ const Router = createBrowserRouter([
         {
          path : '/events/:id',
          element : <EventsDetails></EventsDetails>
-        }
-       
-    ]
+        },
+        ]
   },
   {
   path: "/dashboard",
@@ -105,7 +107,19 @@ const Router = createBrowserRouter([
     {
       path : '/dashboard/manager/my-clubs',
       element : <MyClubs></MyClubs>
-    }
+    },
+    {
+          path: "/dashboard/member",
+          element: <MemberOverview />
+        },
+        {
+          path: "/dashboard/member/my-clubs",
+          element: <MemberClubs />
+        },
+        {
+          path: "/dashboard/member/events",
+          element: <MemberEvents />
+        }
   ]
 }
 

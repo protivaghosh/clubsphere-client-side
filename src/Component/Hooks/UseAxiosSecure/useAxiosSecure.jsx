@@ -12,24 +12,24 @@ const useAxiosSecure = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // request interceptor
     const reqInterceptor = axiosSecure.interceptors.request.use(
-      (config) => {
-        if (user?.accessToken) {
-          config.headers.authorization = `Bearer ${user.accessToken}`;
+      async (config) => {
+        if (user) {
+          const token = await user.getIdToken();
+          config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
       },
       (error) => Promise.reject(error)
     );
 
-    // response interceptor
     const resInterceptor = axiosSecure.interceptors.response.use(
       (response) => response,
       async (error) => {
         const status = error?.response?.status;
 
         if (status === 401 || status === 403) {
+          console.log("Unauthorized → logging out");
           await logOut();
           navigate("/login");
         }
@@ -38,7 +38,6 @@ const useAxiosSecure = () => {
       }
     );
 
-    // cleanup
     return () => {
       axiosSecure.interceptors.request.eject(reqInterceptor);
       axiosSecure.interceptors.response.eject(resInterceptor);

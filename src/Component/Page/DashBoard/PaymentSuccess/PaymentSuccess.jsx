@@ -15,9 +15,7 @@ const PaymentSuccess = () => {
         Thank you for your payment.
       </p>
 
-      <p className="text-sm text-gray-400">
-        Session ID: {sessionId}
-      </p>
+      
     </div>
   );
 };
