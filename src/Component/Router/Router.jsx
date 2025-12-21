@@ -12,6 +12,12 @@ import Clubs from '../Page/Home/Clubs/Clubs';
 import ClubDetails from '../Page/Home/ClubsDetails/ClubsDetails';
 import CreateEvent from '../Page/DashBoard/CreateEvent/CreateEvent';
 import ManagerEvents from '../Page/DashBoard/ManagerEvents/ManagerEvents';
+import Events from '../Page/Events/Events';
+import EventsDetails from '../Page/Events/EventsDetails';
+import MyClubs from '../Page/DashBoard/MyClubs/MyClubs';
+import EditEvent from '../Page/DashBoard/EditEvent/EditEvent';
+import EventRegistrations from '../Page/DashBoard/EventRegistrations/EventRegistrations';
+import ManageUsers from '../Page/DashBoard/ManageUsers/ManageUsers';
 
 const Router = createBrowserRouter([
   {
@@ -38,7 +44,16 @@ const Router = createBrowserRouter([
         {
           path :'/clubs/:id',
           element : <ClubDetails></ClubDetails>
+        },
+        {
+          path: '/events',
+          element: <Events></Events>
+        },
+        {
+         path : '/events/:id',
+         element : <EventsDetails></EventsDetails>
         }
+       
     ]
   },
   {
@@ -54,6 +69,10 @@ const Router = createBrowserRouter([
       element:<ManageClub></ManageClub>
     },
     {
+       path:"/dashboard/admin/users",
+       element:<ManageUsers />
+    }, 
+    {
       path : '/dashboard/manager/create-club',
       element : <CreateClub></CreateClub>
     },
@@ -64,6 +83,18 @@ const Router = createBrowserRouter([
     {
       path: '/dashboard/manager/events',
       element : <ManagerEvents></ManagerEvents>
+    },
+    {
+      path: "/dashboard/manager/events/edit/:id",
+      element : <EditEvent></EditEvent>
+    },
+    {
+   path: "/dashboard/manager/event-registrations/:id",
+   element: <EventRegistrations/>
+   },
+    {
+      path : '/dashboard/manager/my-clubs',
+      element : <MyClubs></MyClubs>
     }
   ]
 }
