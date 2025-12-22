@@ -1,21 +1,54 @@
-import React from 'react';
-import { useSearchParams } from 'react-router';
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { toast } from "react-hot-toast";
+import useAxiosSecure from "../../../Hooks/UseAxiosSecure/useAxiosSecure";
 
 const PaymentSuccess = () => {
-  const [searchParams] = useSearchParams();
-  const sessionId = searchParams.get("session_id");
+  const axiosSecure = useAxiosSecure();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const session_id = query.get("session_id");
+
+    if (!session_id) {
+      toast.error("No session ID found");
+      navigate("/");
+      return;
+    }
+
+    const verifyPayment = async () => {
+      try {
+        const res = await axiosSecure.post("/payment-success", { sessionId: session_id });
+        console.log("Payment verified:", res.data);
+        toast.success("Payment successful and registered!");
+        navigate("/dashboard"); 
+      } catch (err) {
+        console.error(err);
+        toast.error("Payment verification failed");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    verifyPayment();
+  }, [location.search, axiosSecure, navigate]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center mt-20">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h2 className="text-3xl font-bold text-green-600 mb-3">
-        Payment Successful 🎉
-      </h2>
-
-      <p className="text-gray-600 mb-2">
-        Thank you for your payment.
-      </p>
-
-      
+    <div className="text-center mt-20">
+      <h2 className="text-2xl font-bold">Payment Success!</h2>
+      <p className="mt-4">You are now registered for the event.</p>
     </div>
   );
 };

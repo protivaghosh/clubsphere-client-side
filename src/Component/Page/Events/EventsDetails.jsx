@@ -1,4 +1,3 @@
-// src/Pages/Events/EventsDetails.jsx
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -11,51 +10,53 @@ const EventsDetails = () => {
 
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [processing, setProcessing] = useState(false); // prevent double clicks
 
   useEffect(() => {
     const fetchEvent = async () => {
       try {
+        setLoading(true);
         const res = await axiosSecure.get(`/events/${id}`);
         setEvent(res.data);
-        setLoading(false);
       } catch (err) {
         console.error(err);
         toast.error("Failed to load event details");
+      } finally {
         setLoading(false);
       }
     };
     fetchEvent();
   }, [id, axiosSecure]);
 
-  // ✅ FINAL JOIN HANDLER (Requirement Match)
   const handleJoinEvent = async () => {
-    if (!event) return;
+    if (!event || processing) return;
+    setProcessing(true);
 
-    // 🟢 FREE EVENT
-    if (!event.isPaid) {
-      try {
+    try {
+      // Free Event
+      if (!event.isPaid) {
         await axiosSecure.post("/event-registrations", {
           eventId: event._id,
           clubId: event.clubId,
         });
         toast.success("Successfully joined the event!");
-      } catch (err) {
-        toast.error("Already registered or failed to join");
-      }
-    }
-
-    // PAID EVENT
-    else {
-      try {
-        const res = await axiosSecure.post(
-          "/create-event-checkout-session",
-          { eventId: event._id }
-        );
-
+      } 
+      // Paid Event
+      else {
+        const res = await axiosSecure.post("/create-event-checkout-session", {
+          eventId: event._id,
+        });
         window.location.href = res.data.url;
-      } catch (err) {
-        toast.error("Payment initialization failed");
       }
+    } catch (err) {
+      console.error(err);
+      toast.error(
+        event.isPaid
+          ? "Payment initialization failed"
+          : "Already registered or failed to join"
+      );
+    } finally {
+      setProcessing(false);
     }
   };
 
@@ -114,15 +115,17 @@ const EventsDetails = () => {
 
       {/* Organizer */}
       <p className="text-gray-500 mb-8 text-sm md:text-base">
-        Organized by:{" "}
-        <span className="font-semibold">{event.managerEmail}</span>
+        Organized by: <span className="font-semibold">{event.managerEmail}</span>
       </p>
 
-      {/* ✅ JOIN / PAY BUTTON */}
+      {/* Join / Pay Button */}
       <div className="text-center">
         <button
           onClick={handleJoinEvent}
-          className="btn btn-primary btn-wide hover:scale-105 transition-transform"
+          className={`btn btn-primary btn-wide hover:scale-105 transition-transform ${
+            processing ? "loading" : ""
+          }`}
+          disabled={processing}
         >
           {event.isPaid
             ? `Pay ৳${event.eventFee} & Join`
