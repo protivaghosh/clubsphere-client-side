@@ -7,11 +7,18 @@ const PaymentHistory = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axiosSecure.get("/member/payments")
-      .then(res => {
+    const fetchPayments = async () => {
+      try {
+        const res = await axiosSecure.get("/member/payments");
         setPayments(res.data);
+      } catch (err) {
+        console.error("Failed to fetch payments:", err);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchPayments();
   }, [axiosSecure]);
 
   if (loading) return <p>Loading payments...</p>;
@@ -28,7 +35,8 @@ const PaymentHistory = () => {
             <tr>
               <th className="p-2 border">Amount</th>
               <th className="p-2 border">Type</th>
-              <th className="p-2 border">Club</th>
+              <th className="p-2 border">Club/Event</th>
+              <th className="p-2 border">Transaction ID</th>
               <th className="p-2 border">Date</th>
               <th className="p-2 border">Status</th>
             </tr>
@@ -38,13 +46,22 @@ const PaymentHistory = () => {
               <tr key={payment._id} className="text-center">
                 <td className="p-2 border">৳{payment.amount}</td>
                 <td className="p-2 border capitalize">{payment.type}</td>
-                <td className="p-2 border">{payment.clubName}</td>
+                <td className="p-2 border">
+                  {payment.clubName || payment.eventTitle || "N/A"}
+                </td>
+                <td className="p-2 border">{payment.transactionId}</td>
                 <td className="p-2 border">
                   {new Date(payment.createdAt).toLocaleDateString()}
                 </td>
                 <td className="p-2 border">
-                  <span className="text-green-600 font-semibold">
-                    {payment.paymentStatus}
+                  <span
+                    className={
+                      payment.status === "success"
+                        ? "text-green-600 font-semibold"
+                        : "text-red-600 font-semibold"
+                    }
+                  >
+                    {payment.status}
                   </span>
                 </td>
               </tr>
