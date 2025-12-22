@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/UseAxiosSecure/useAxiosSecure";
 import { Link } from "react-router-dom";
-import { FaEye, FaTrash } from "react-icons/fa";
+import { FaEye, FaTrash, FaEdit } from "react-icons/fa"; // FaEdit import
 import { toast } from "react-hot-toast";
 
 const MyClubs = () => {
@@ -83,8 +83,15 @@ const MyClubs = () => {
                   >
                     <FaEye />
                   </Link>
-               
-                <button
+
+                  <Link
+                    to={`/dashboard/manager/my-clubs/edit/${club._id}`} // edit page route
+                    className="btn btn-xs btn-warning"
+                  >
+                    <FaEdit />
+                  </Link>
+
+                  <button
                     onClick={() => handleDelete(club._id)}
                     className="btn btn-xs btn-error"
                   >

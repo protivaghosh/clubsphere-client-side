@@ -75,6 +75,9 @@ const DashboardLayout = () => {
             <NavLink to="/dashboard/member/events" className={navClass}>
               My Events
             </NavLink>
+            <NavLink to="/dashboard/member/payment" className={navClass}>
+              payment History
+            </NavLink>
           </nav>
         )}
       </aside>

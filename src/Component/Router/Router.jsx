@@ -28,6 +28,7 @@ import PrivateRoute from '../Routes/PrivateRoute/PrivateRoute';
 import AdminRoute from '../Routes/AdminRoute/AdminRoute';
 import ManagerRoute from '../Routes/ManagerRoute/ManagerRoute';
 import ManagerOverview from '../Page/DashBoard/MemberOverview/MemberOverview';
+import PaymentHistory from '../Page/DashBoard/PaymentHistory/PaymentHistory';
 
 
 const Router = createBrowserRouter([
@@ -152,6 +153,10 @@ const Router = createBrowserRouter([
         {
           path: "/dashboard/member/events",
           element: <MemberEvents />
+        },
+        {
+          path : '/dashboard/member/payment',
+          element: <PaymentHistory></PaymentHistory>
         }
   ]
 }
