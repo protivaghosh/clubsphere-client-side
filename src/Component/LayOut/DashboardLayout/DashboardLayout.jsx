@@ -1,21 +1,16 @@
-import { useState } from "react";
-import { NavLink, Outlet, Link } from "react-router-dom";
-import { HiMenu, HiX } from "react-icons/hi";
-
+import { Link, NavLink, Outlet } from "react-router-dom";
 import UseRole from "../../Hooks/UseRole/UseRole";
 import UseAuth from "../../Page/Auth/UseAuth/UseAuth";
 
-
 const DashboardLayout = () => {
   const { user } = UseAuth();
-  const { role, roleLoading } = UseRole(); 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { role, roleLoading } = UseRole();
 
   const navClass = ({ isActive }) =>
     `px-4 py-2 rounded-md text-sm font-medium transition ${
       isActive
         ? "bg-blue-100 text-blue-600 font-semibold"
-        : "text-gray-600 hover:bg-gray-100"
+        : "text-gray-700 hover:bg-gray-100"
     }`;
 
   if (roleLoading) {
@@ -27,113 +22,83 @@ const DashboardLayout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="flex min-h-screen bg-gray-50">
+      {/* STATIC SIDEBAR */}
+      <aside className="w-64 bg-white shadow-md h-screen p-6 flex flex-col">
+        <Link to='/' className="text-2xl font-bold text-blue-600 mb-6">ClubSphere</Link>
 
-      {/* TOP NAVBAR */}
-      <div className="bg-white shadow-md sticky top-0 z-50">
-        <div className="max-w-full px-6 py-3 flex justify-between items-center">
+        {/* ADMIN MENU */}
+        {role === "admin" && (
+          <nav className="flex flex-col gap-2">
+            <NavLink to="/dashboard/admin" className={navClass}>
+              Admin Overview
+            </NavLink>
+            <NavLink to="/dashboard/admin/users" className={navClass}>
+              Manage Users
+            </NavLink>
+            <NavLink to="/dashboard/admin/clubs" className={navClass}>
+              Manage Clubs
+            </NavLink>
+          </nav>
+        )}
 
-          {/* Logo → Home */}
-          <Link to="/" className="text-2xl font-bold text-blue-600">
-            Club<span className="text-gray-900">Sphere</span>
-          </Link>
+        {/* MANAGER MENU */}
+        {role === "manager" && (
+          <nav className="flex flex-col gap-2">
+            <NavLink to="/dashboard/manager" className={navClass}>
+              Manager Overview
+            </NavLink>
+            <NavLink to="/dashboard/manager/my-clubs" className={navClass}>
+              My Clubs
+            </NavLink>
+            <NavLink to="/dashboard/manager/create-club" className={navClass}>
+              Create Club
+            </NavLink>
+            <NavLink to="/dashboard/manager/createEvents" className={navClass}>
+              Create Event
+            </NavLink>
+            <NavLink to="/dashboard/manager/events" className={navClass}>
+              Events
+            </NavLink>
+          </nav>
+        )}
 
-          {/* Hamburger for mobile */}
-          <button
-            className="md:hidden text-gray-700 text-2xl"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            {sidebarOpen ? <HiX /> : <HiMenu />}
-          </button>
+        {/* MEMBER MENU */}
+        {role === "member" && (
+          <nav className="flex flex-col gap-2">
+            <NavLink to="/dashboard/member" className={navClass}>
+              Member Overview
+            </NavLink>
+            <NavLink to="/dashboard/member/my-clubs" className={navClass}>
+              My Clubs
+            </NavLink>
+            <NavLink to="/dashboard/member/events" className={navClass}>
+              My Events
+            </NavLink>
+          </nav>
+        )}
+      </aside>
 
-          {/* User Info */}
-          <div className="hidden sm:flex items-center gap-3">
+      {/* MAIN CONTENT */}
+      <div className="flex-1 flex flex-col">
+        {/* TOP NAVBAR */}
+        <div className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Welcome, {user?.displayName || "User"}
+            </h2>
+          </div>
+          <div className="flex items-center gap-3">
             <img
               src={user?.photoURL}
-              alt="user"
-              className="w-9 h-9 rounded-full border"
+              alt={user?.displayName}
+              className="w-10 h-10 rounded-full border"
             />
-            <span className="text-sm font-medium text-gray-700">
-              {user?.displayName}
-            </span>
           </div>
         </div>
-      </div>
 
-      <div className="flex flex-1">
-
-        {/* SIDEBAR */}
-        <aside
-          className={`fixed top-0 left-0 z-40 h-full w-64 bg-white shadow-md transform transition-transform duration-300 md:relative md:translate-x-0 ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
-          <div className="p-6 text-lg font-semibold text-gray-800 border-b">
-            Dashboard Menu
-          </div>
-
-          <nav className="flex flex-col gap-2 px-4 mt-4">
-
-            {/* ADMIN MENU */}
-            {role === "admin" && (
-              <>
-                <NavLink to="/dashboard/admin" className={navClass}>
-                  Admin Overview
-                </NavLink>
-                <NavLink to="/dashboard/admin/users" className={navClass}>
-                  Manage Users
-                </NavLink>
-                <NavLink to="/dashboard/admin/clubs" className={navClass}>
-                  Manage Clubs
-                </NavLink>
-              </>
-            )}
-
-            {/* CLUB MANAGER MENU */}
-            {role === "manager" && (
-              <>
-                <NavLink to="/dashboard/manager" className={navClass}>
-                  Manager Overview
-                </NavLink>
-                <NavLink to="/dashboard/manager/my-clubs" className={navClass}>
-                  My Clubs
-                </NavLink>
-                <NavLink to="/dashboard/manager/create-club" className={navClass}>
-                  Create Club
-                </NavLink>
-                <NavLink to="/dashboard/manager/createEvents" className={navClass}>
-                  Create Event
-                </NavLink>
-                <NavLink to="/dashboard/manager/events" className={navClass}>
-                  Events
-                </NavLink>
-              </>
-            )}
-
-            {/* MEMBER MENU */}
-            {role === "member" && (
-              <>
-                <NavLink to="/dashboard/member" className={navClass}>
-                  Member Overview
-                </NavLink>
-                <NavLink to="/dashboard/member/my-clubs" className={navClass}>
-                  My Clubs
-                </NavLink>
-                <NavLink to="/dashboard/member/events" className={navClass}>
-                  My Events
-                </NavLink>
-              </>
-            )}
-
-          </nav>
-        </aside>
-
-        {/* MAIN CONTENT */}
-        <main
-          className={`flex-1 p-6 transition-all duration-300 ${
-            sidebarOpen ? "ml-64 md:ml-64" : "ml-0 md:ml-64"
-          }`}
-        >
+        {/* PAGE CONTENT */}
+        <main className="p-6 flex-1 bg-gray-50">
           <Outlet />
         </main>
       </div>

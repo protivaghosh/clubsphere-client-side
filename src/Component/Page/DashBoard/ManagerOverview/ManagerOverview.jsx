@@ -1,20 +1,18 @@
+// src/Component/Page/DashBoard/ManagerOverview/ManagerOverview.jsx
 import React, { useEffect, useState } from "react";
-
-
+import axios from "axios";
+import UseAuth from "../../../Auth/UseAuth/UseAuth";
 import { toast } from "react-hot-toast";
-import UseAuth from "../../Auth/UseAuth/UseAuth";
-import useAxiosSecure from "../../../Hooks/UseAxiosSecure/useAxiosSecure";
 
 const ManagerOverview = () => {
   const [overview, setOverview] = useState(null);
   const [loading, setLoading] = useState(true);
   const { token } = UseAuth();
-  const axiosSecure = useAxiosSecure()
 
   useEffect(() => {
     const fetchOverview = async () => {
       try {
-        const res = await axiosSecure.get("/manager/overview", {
+        const res = await axios.get("/manager/overview", {
           headers: { Authorization: `Bearer ${token}` }
         });
         setOverview(res.data);

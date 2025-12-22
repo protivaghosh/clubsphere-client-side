@@ -23,6 +23,12 @@ import PaymentCancel from '../Page/DashBoard/PaymentCancel/PaymentCancel';
 import MemberOverview from '../Page/DashBoard/MemberOverview/MemberOverview';
 import MemberClubs from '../Page/DashBoard/MemberClubs/MemberClubs';
 import MemberEvents from '../Page/DashBoard/MemberEvents/MemberEvents';
+import AdminOverview from '../Page/DashBoard/AdminOverview/AdminOverview';
+import PrivateRoute from '../Routes/PrivateRoute/PrivateRoute';
+import AdminRoute from '../Routes/AdminRoute/AdminRoute';
+import ManagerRoute from '../Routes/ManagerRoute/ManagerRoute';
+import ManagerOverview from '../Page/DashBoard/MemberOverview/MemberOverview';
+
 
 const Router = createBrowserRouter([
   {
@@ -48,7 +54,7 @@ const Router = createBrowserRouter([
         },
         {
           path :'/clubs/:id',
-          element : <ClubDetails></ClubDetails>
+          element :<PrivateRoute><ClubDetails></ClubDetails></PrivateRoute> 
         },
         {
           path: '/events',
@@ -56,45 +62,70 @@ const Router = createBrowserRouter([
         },
         {
          path : '/events/:id',
-         element : <EventsDetails></EventsDetails>
+         element :<PrivateRoute><EventsDetails></EventsDetails></PrivateRoute> 
         },
         ]
   },
   {
   path: "/dashboard",
-  element: <DashboardLayout />,
+  element:<PrivateRoute><DashboardLayout /> </PrivateRoute>,
   children: [
     {
       index: true,
       element: <h2>Welcome to Dashboard</h2>
     },
     {
+      path: '/dashboard/admin',
+      element:<AdminRoute><AdminOverview></AdminOverview></AdminRoute> 
+    },
+    {
       path : '/dashboard/admin/clubs',
-      element:<ManageClub></ManageClub>
+      element:<AdminRoute>
+        <ManageClub></ManageClub>
+      </AdminRoute>
     },
     {
        path:"/dashboard/admin/users",
-       element:<ManageUsers />
+       element:<AdminRoute>
+        <ManageUsers />
+        </AdminRoute>
+    },
+    {
+      path: '/dashboard/manager',
+      element: <ManagerRoute>
+        <ManagerOverview></ManagerOverview>
+      </ManagerRoute>
     }, 
     {
       path : '/dashboard/manager/create-club',
-      element : <CreateClub></CreateClub>
+      element :<ManagerRoute>
+        <CreateClub></CreateClub>
+      </ManagerRoute> 
     },
     {
       path: '/dashboard/manager/createEvents',
-      element : <CreateEvent></CreateEvent>
+      element :<ManagerRoute>
+        <CreateEvent></CreateEvent>
+      </ManagerRoute> 
     },
     {
       path: '/dashboard/manager/events',
-      element : <ManagerEvents></ManagerEvents>
+      element :<ManagerRoute>
+        <ManagerEvents></ManagerEvents>
+        </ManagerRoute> 
     },
+      
     {
       path: "/dashboard/manager/events/edit/:id",
-      element : <EditEvent></EditEvent>
+      element :<ManagerRoute>
+        <EditEvent></EditEvent>
+      </ManagerRoute> 
     },
     {
    path: "/dashboard/manager/event-registrations/:id",
-   element: <EventRegistrations/>
+   element:<ManagerRoute>
+    <EventRegistrations/>
+   </ManagerRoute> 
    },
     {
         path : 'payment-success',
@@ -106,7 +137,9 @@ const Router = createBrowserRouter([
       },
     {
       path : '/dashboard/manager/my-clubs',
-      element : <MyClubs></MyClubs>
+      element :<ManagerRoute>
+        <MyClubs></MyClubs>
+      </ManagerRoute> 
     },
     {
           path: "/dashboard/member",
