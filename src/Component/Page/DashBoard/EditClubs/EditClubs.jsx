@@ -5,7 +5,7 @@ import useAxiosSecure from "../../../Hooks/UseAxiosSecure/useAxiosSecure";
 import { toast } from "react-hot-toast";
 
 const EditClubs = () => {
-  const { id } = useParams(); // club id from URL
+  const { id } = useParams();
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
 
@@ -14,15 +14,14 @@ const EditClubs = () => {
   const [formData, setFormData] = useState({
     clubName: "",
     category: "",
-    membershipFee: "",
+    membershipFee: 0,
     description: "",
   });
 
-  // Fetch club details on load
   useEffect(() => {
     const fetchClub = async () => {
       try {
-        const res = await axiosSecure.get(`/clubs/${id}`);
+        const res = await axiosSecure.get(`/manager/my-clubs/${id}`);
         setClub(res.data);
         setFormData({
           clubName: res.data.clubName || "",
@@ -37,7 +36,6 @@ const EditClubs = () => {
         setLoading(false);
       }
     };
-
     fetchClub();
   }, [id, axiosSecure]);
 
@@ -48,10 +46,10 @@ const EditClubs = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axiosSecure.patch(`/manager/my-clubs/edit/${id}`, formData);
+      const res = await axiosSecure.patch(`/manager/my-clubs/${id}`, formData);
       if (res.data.success) {
         toast.success(res.data.message);
-        navigate("/dashboard/my-clubs"); // redirect to MyClubs page
+        navigate("/dashboard/manager/my-clubs");
       }
     } catch (err) {
       console.error(err);

@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/UseAxiosSecure/useAxiosSecure";
 import { Link } from "react-router-dom";
-import { FaEye, FaTrash, FaEdit } from "react-icons/fa"; // FaEdit import
+import { FaEye, FaTrash, FaEdit } from "react-icons/fa";
 import { toast } from "react-hot-toast";
 
 const MyClubs = () => {
@@ -20,22 +20,23 @@ const MyClubs = () => {
     const confirm = window.confirm("Are you sure?");
     if (!confirm) return;
 
-    const res = await axiosSecure.delete(`/manager/my-clubs/${id}`);
-    if (res.data.deletedCount > 0) {
-      toast.success("Club deleted");
-      refetch();
+    try {
+      const res = await axiosSecure.delete(`/manager/my-clubs/${id}`);
+      if (res.data.deletedCount > 0) {
+        toast.success("Club deleted");
+        refetch();
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete club");
     }
   };
 
-  if (isLoading) {
-    return <p className="text-center mt-10">Loading...</p>;
-  }
+  if (isLoading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold mb-6">
-        My Clubs ({clubs.length})
-      </h2>
+      <h2 className="text-3xl font-bold mb-6">My Clubs ({clubs.length})</h2>
 
       <div className="overflow-x-auto bg-white rounded-xl shadow">
         <table className="table table-zebra">
@@ -50,16 +51,13 @@ const MyClubs = () => {
               <th>Actions</th>
             </tr>
           </thead>
-
           <tbody>
             {clubs.map((club, index) => (
               <tr key={club._id}>
                 <td>{index + 1}</td>
                 <td className="font-semibold">{club.clubName}</td>
                 <td>{club.category}</td>
-                <td>
-                  {club.membershipFee === 0 ? "Free" : `৳${club.membershipFee}`}
-                </td>
+                <td>{club.membershipFee === 0 ? "Free" : `৳${club.membershipFee}`}</td>
                 <td>
                   <span
                     className={`badge ${
@@ -73,19 +71,14 @@ const MyClubs = () => {
                     {club.status}
                   </span>
                 </td>
-                <td>
-                  {new Date(club.createdAt).toLocaleDateString()}
-                </td>
+                <td>{new Date(club.createdAt).toLocaleDateString()}</td>
                 <td className="flex gap-2">
-                  <Link
-                    to={`/clubs/${club._id}`}
-                    className="btn btn-xs btn-info"
-                  >
+                  <Link to={`/clubs/${club._id}`} className="btn btn-xs btn-info">
                     <FaEye />
                   </Link>
 
                   <Link
-                    to={`/dashboard/manager/my-clubs/edit/${club._id}`} // edit page route
+                    to={`/dashboard/manager/my-clubs/edit/${club._id}`}
                     className="btn btn-xs btn-warning"
                   >
                     <FaEdit />

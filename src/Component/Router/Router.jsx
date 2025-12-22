@@ -29,6 +29,7 @@ import AdminRoute from '../Routes/AdminRoute/AdminRoute';
 import ManagerRoute from '../Routes/ManagerRoute/ManagerRoute';
 import ManagerOverview from '../Page/DashBoard/MemberOverview/MemberOverview';
 import PaymentHistory from '../Page/DashBoard/PaymentHistory/PaymentHistory';
+import EditClubs from '../Page/DashBoard/EditClubs/EditClubs';
 
 
 const Router = createBrowserRouter([
@@ -121,6 +122,12 @@ const Router = createBrowserRouter([
       element :<ManagerRoute>
         <EditEvent></EditEvent>
       </ManagerRoute> 
+    },
+    {
+      path : '/dashboard/manager/my-clubs/edit/:id',
+      element:<ManagerRoute>
+        <EditClubs></EditClubs>
+      </ManagerRoute>
     },
     {
    path: "/dashboard/manager/event-registrations/:id",
