@@ -1,16 +1,89 @@
-# React + Vite
+# ClubSphere – Membership & Event Management for Local Clubs
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Currently, two official plugins are available:
+## Project Overview
+**ClubSphere** is a full-stack MERN web application designed to help people discover, join, and manage local clubs. Club managers can create and manage clubs and events, members can join clubs and register for events, and an admin oversees the entire platform. The platform includes authentication, role-based dashboards, secure payments using Stripe, and modern frontend tools like React Hook Form and TanStack Query.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Live Demo
+[Live Site Link](YOUR_DEPLOYED_CLIENT_URL_HERE)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+### Public Features
+- Browse clubs and events
+- Club and event search/filter
+- Club and event details
+- Responsive UI (mobile, tablet, desktop)
+- Authentication with Firebase (Email/Password + Google)
+- Animations using Framer Motion
+- Sorting and filtering options
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Member Features
+- Join clubs (free or paid)
+- View active memberships
+- Register for events
+- View upcoming events from their clubs
+- Payment history
+- Bookmark clubs/events (optional)
+
+### Club Manager Features
+- Create/update clubs
+- Set membership fees (free or paid)
+- Manage club members
+- Create/update/delete events
+- View event registrations and payments
+
+### Admin Features
+- Manage users (role promotion/demotion)
+- Approve/reject clubs
+- Monitor all memberships, events, and payments
+- Dashboard with summary statistics and charts
+
+---
+
+## Technology Stack
+
+### Frontend
+- React.js
+- React Router
+- TanStack Query
+- React Hook Form
+- Framer Motion
+- Tailwind CSS / DaisyUI
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB (via Mongoose)
+- Firebase Authentication
+- Stripe (for payments)
+- JWT (for secure API access)
+
+---
+
+## Database Design (Collections)
+
+### Users
+- `name`, `email`, `photoURL`, `role` (admin / clubManager / member), `createdAt`
+  
+### Clubs
+- `clubName`, `description`, `category`, `location`, `bannerImage`, `membershipFee`, `status`, `managerEmail`, `createdAt`, `updatedAt`
+
+### Memberships
+- `userEmail`, `clubId`, `status`, `paymentId`, `joinedAt`, `expiresAt`
+
+### Events
+- `clubId`, `title`, `description`, `eventDate`, `location`, `isPaid`, `eventFee`, `maxAttendees`, `createdAt`
+
+### EventRegistrations
+- `eventId`, `userEmail`, `clubId`, `status`, `paymentId`, `registeredAt`
+
+### Payments
+- `userEmail`, `amount`, `type` (membership/event), `clubId`, `eventId`, `stripePaymentIntentId`, `status`, `createdAt`
+
+
+
+
