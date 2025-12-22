@@ -7,10 +7,10 @@ const MemberClubs = () => {
   const [memberships, setMemberships] = useState([]);
 
   useEffect(() => {
-    // Fetch memberships where the user has an active membership
-    axiosSecure.get("/my-memberships").then(res => {
-      setMemberships(res.data);
-    }).catch(err => console.error(err));
+    // Fetch memberships from payments collection
+    axiosSecure.get("/my-clubs-from-payments")
+      .then(res => setMemberships(res.data))
+      .catch(err => console.error(err));
   }, [axiosSecure]);
 
   return (
@@ -27,12 +27,13 @@ const MemberClubs = () => {
               <p className="text-sm text-gray-500">Location: {membership.location}</p>
               <p className="text-sm">
                 Status:{" "}
-                <span className={membership.status === 'Active' ? 'text-green-600' : 'text-red-600'}>
-                  {membership.status}
-                </span>
+                <span className="text-green-600">Active</span>
               </p>
               <p className="text-sm text-gray-500">
-                Expiry Date: {new Date(membership.expiryDate).toLocaleDateString()}
+                Joined On: {new Date(membership.joinedAt).toLocaleDateString()}
+              </p>
+              <p className="text-sm text-gray-500">
+                Payment: ${membership.amount}
               </p>
               <Link 
                 to={`/clubs/${membership.clubId}`} 
